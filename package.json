@@ -1,0 +1,24 @@
+{
+  "name": "async-request",
+  "version": "0.0.1",
+  "description": "A small request wrapper to facilitate async requests",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EndoMatrix/async-request.git"
+  },
+  "keywords": [
+    "async",
+    "request",
+    "wrapper"
+  ],
+  "author": "Matthew Barber (EndoMatrix)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EndoMatrix/async-request/issues"
+  },
+  "homepage": "https://github.com/EndoMatrix/async-request#readme"
+}
