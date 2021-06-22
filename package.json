@@ -1,7 +1,7 @@
 {
-  "name": "async-request",
+  "name": "@endom8rix/async-request",
   "version": "0.0.1",
-  "description": "A small request wrapper to facilitate async requests",
+  "description": "A lightweight, zero-dependency request wrapper to facilitate asynchronous requests",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
