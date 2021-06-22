@@ -39,4 +39,4 @@ await request('https://www.example.com/', { method: 'POST' }, 'Hello World');
 // POST request with a JSON object as the request body
 await request('https://www.example.com/', { method: 'POST' }, { message: 'Hello World' });
 ```
-A full list of options can be found on the respective [`http`](https://nodejs.org/api/http.html#http_http_request_url_options_callback) and [`https`](https://nodejs.org/api/https.html#https_https_request_url_options_callback) module pages.
+A full list of options can be found on the respective [`http`](https://nodejs.org/api/http.html) and [`https`](https://nodejs.org/api/https.html) module pages.
