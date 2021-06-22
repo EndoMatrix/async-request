@@ -46,7 +46,7 @@ function request(url, opts, body = '') {
         }
       });
 
-      response.on('error', (error) => {
+      response.on('error', error => {
         reject(error);
       });
     });
