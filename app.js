@@ -32,9 +32,9 @@ function request(url, opts, body = '') {
       response.on('end', () => {
         const tock = new Date().getTime();
         try {
-          const message = chunks.join(''); // concatenates data chunks into a single string
           const { headers } = response;
-          resolve({ message, headers });
+          const body = chunks.join(''); // concatenates data chunks into a single string
+          resolve({ headers, body });
         }
         catch (error) {
           reject(error);
