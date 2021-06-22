@@ -21,7 +21,7 @@ function request(url, opts, body = '') {
     if (!(url instanceof URL)) {
       url = new URL(url); // coerces input into URL if not one already
     }
-    const protocol = protocols[url.protocol?.slice(0, -1)]; // uses optional chain to avoid errors
+    const protocol = protocols[url.protocol?.slice(0, -1)]; // removes trailing colon from URL protocol value
     const request = protocol.request(url, { 'Content-Length': Buffer.byteLength(data), ...opts }, response => {
       const chunks = []; // creates an empty array to store response body
 
@@ -40,7 +40,7 @@ function request(url, opts, body = '') {
           reject(error);
         }
         finally {
-          const color = `\x1b[${colors[response.statusCode.toString().charAt(0)] || 36}m`; // applies style changes
+          const color = `\x1b[${colors[response.statusCode.toString().charAt(0)] || 36}m`; // applies style changes, defaults to blue
           const reset = '\x1b[0m'; // resets style changes
           console.debug(`${color}${request.method} ${request.protocol}//${request.host}${request.path} ${response.statusCode} ${tock - tick}ms${reset}`);
         }
