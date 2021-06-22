@@ -1,10 +1,10 @@
 {
   "name": "@endom8rix/async-request",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A lightweight, zero-dependency request wrapper to facilitate asynchronous requests",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"No Tests Available\""
   },
   "repository": {
     "type": "git",
@@ -15,7 +15,7 @@
     "request",
     "wrapper"
   ],
-  "author": "Matthew Barber (EndoMatrix)",
+  "author": "Matthew Barber <mattbarbers@btinternet.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/EndoMatrix/async-request/issues"
