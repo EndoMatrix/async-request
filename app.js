@@ -5,14 +5,10 @@ const qs = require('querystring');
 const colors = { 2: 32, 3: 33, 4: 31, 5: 31 }; // colours 200-299 green, 300-399 yellow, and 400-599 red
 const protocols = { http, https }; // uses HTTP or HTTPS depending on the protocols
 
-function convert(opts, body) {
+function parse(opts, body) {
   switch (opts.headers['Content-Type']) {
     case 'application/json': return JSON.stringify(body);
     case 'application/x-www-form-urlencoded': return qs.stringify(body);
-    case 'text/plain':
-      if (!(typeof body === 'string' || body instanceof String)) {
-        return JSON.stringify(body); // converts non-strings to strings
-      }
     default: return body; // catches text/plain strings also
   }
 }
@@ -27,7 +23,7 @@ function convert(opts, body) {
  */
 function request(url, opts = {}, body = '') {
   opts.headers = { ...opts.headers };
-  const data = convert(opts, body);
+  const data = parse(opts, body);
 
   if (!opts.headers['Content-Length']) {
     opts.headers['Content-Length'] = Buffer.byteLength(data);
