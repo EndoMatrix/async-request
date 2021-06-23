@@ -5,11 +5,18 @@ const qs = require('querystring');
 const colors = { 2: 32, 3: 33, 4: 31, 5: 31 }; // colours 200-299 green, 300-399 yellow, and 400-599 red
 const protocols = { http, https }; // uses HTTP or HTTPS depending on the protocols
 
+/**
+ * Parse a request body based on known MIME types, based on the Content-Type
+ * header. If unknown or undefined, will return the original request body.
+ * @param {Object} opts - The request options.
+ * @param {Object|String} body - The request body.
+ * @returns {Object|String} A parsed request body for known MIME types, or the original request body.
+ */
 function parse(opts, body) {
   switch (opts.headers['Content-Type']) {
     case 'application/json': return JSON.stringify(body);
     case 'application/x-www-form-urlencoded': return qs.stringify(body);
-    default: return body; // catches text/plain strings also
+    default: return body;
   }
 }
 
@@ -22,7 +29,10 @@ function parse(opts, body) {
  * @returns {Promise} A promise to return either a response object, or an error.
  */
 function request(url, opts = {}, body = '') {
-  opts.headers = { ...opts.headers };
+  if (!opts.headers) {
+    opts.headers = {};
+  }
+
   const data = parse(opts, body);
 
   if (!opts.headers['Content-Length']) {

@@ -46,7 +46,7 @@ Some MIME types are handled automatically:
 // POST request with a JSON request body
 await request('https://www.example.com/', { method: 'POST', headers: { 'Content-Type': 'application/json' } }, { say: 'Hello', to: 'World' });
 
-// POST request with a URL-Encoded Form request body
+// POST request with a URL-encoded Form request body
 await request('https://www.example.com/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }, { say: 'Hello', to: 'World' });
 ```
 
