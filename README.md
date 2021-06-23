@@ -2,7 +2,7 @@
 A lightweight, zero-dependency request wrapper to facilitate asynchronous requests.
 
 ## Setup
-```shell
+```SHELL
 $ npm install @endom8rix/async-request
 ```
 
@@ -35,8 +35,17 @@ await request('https://www.example.com/', { method: 'POST' });
 
 // POST request with a String as the request body
 await request('https://www.example.com/', { method: 'POST' }, 'Hello World');
-
-// POST request with a JSON object as the request body
-await request('https://www.example.com/', { method: 'POST' }, { message: 'Hello World' });
 ```
+Note that if the `Content-Type` header is not defined, the request body will be sent as-is. If you attempt to use a non-String or non-Buffer value, an error will occur.
+
+Some MIME types are handled automatically:
+
+```JS
+// POST request with a JSON request body
+await request('https://www.example.com/', { method: 'POST', headers: { 'Content-Type': 'application/json' } }, { say: 'Hello', to: 'World' });
+
+// POST request with a URL-Encoded Form request body
+await request('https://www.example.com/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }, { say: 'Hello', to: 'World' });
+```
+
 A full list of options can be found on the respective [`http`](https://nodejs.org/api/http.html) and [`https`](https://nodejs.org/api/https.html) module pages.

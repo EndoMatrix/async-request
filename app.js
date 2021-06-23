@@ -1,9 +1,21 @@
 const http = require('http');
 const https = require('https');
-const querystring = require('querystring');
+const qs = require('querystring');
 
 const colors = { 2: 32, 3: 33, 4: 31, 5: 31 }; // colours 200-299 green, 300-399 yellow, and 400-599 red
 const protocols = { http, https }; // uses HTTP or HTTPS depending on the protocols
+
+function convert(opts, body) {
+  switch (opts.headers['Content-Type']) {
+    case 'application/json': return JSON.stringify(body);
+    case 'application/x-www-form-urlencoded': return qs.stringify(body);
+    case 'text/plain':
+      if (!(typeof body === 'string' || body instanceof String)) {
+        return JSON.stringify(body); // converts non-strings to strings
+      }
+    default: return body; // catches text/plain strings also
+  }
+}
 
 /**
  * Make an asynchronous request to an HTTP or HTTPS address. Automatically
@@ -13,16 +25,21 @@ const protocols = { http, https }; // uses HTTP or HTTPS depending on the protoc
  * @param {Object|String} body - The request body.
  * @returns {Promise} A promise to return either a response object, or an error.
  */
-function request(url, opts, body = '') {
-  const data = querystring.stringify(body); // stringifies the request body.
+function request(url, opts = {}, body = '') {
+  opts.headers = { ...opts.headers };
+  const data = convert(opts, body);
 
-  const tick = new Date().getTime();
+  if (!opts.headers['Content-Length']) {
+    opts.headers['Content-Length'] = Buffer.byteLength(data);
+  }
+
   return new Promise((resolve, reject) => {
     if (!(url instanceof URL)) {
       url = new URL(url); // coerces input into URL if not one already
     }
     const protocol = protocols[url.protocol?.slice(0, -1)]; // removes trailing colon from URL protocol value
-    const request = protocol.request(url, { 'Content-Length': Buffer.byteLength(data), ...opts }, response => {
+    const tick = new Date().getTime();
+    const request = protocol.request(url, opts, response => {
       const chunks = []; // creates an empty array to store response body
 
       response.on('data', chunk => {
