@@ -1,3 +1,5 @@
+![npm](https://img.shields.io/npm/v/@endom8rix/async-request)
+
 # @endom8rix/async-request
 A lightweight, zero-dependency request wrapper to facilitate asynchronous requests.
 
