@@ -12,7 +12,11 @@ const protocols = { http, https }; // uses HTTP or HTTPS depending on the protoc
  * @param {Object|String} body - The request body.
  * @returns {Object|String} A parsed request body for known MIME types, or the original request body.
  */
-function parse(opts, body) {
+function parse(opts = {}, body) {
+  if (opts.headers == null) {
+    return body; // terminates early if unable to retrieve MIME type
+  }
+
   switch (opts.headers['Content-Type']) {
     case 'application/json': return JSON.stringify(body);
     case 'application/x-www-form-urlencoded': return qs.stringify(body);
@@ -29,13 +33,13 @@ function parse(opts, body) {
  * @returns {Promise} A promise to return either a response object, or an error.
  */
 function request(url, opts = {}, body = '') {
-  if (!opts.headers) {
+  const data = parse(opts, body);
+
+  if (opts.headers == null) {
     opts.headers = {};
   }
 
-  const data = parse(opts, body);
-
-  if (!opts.headers['Content-Length']) {
+  if (opts.headers['Content-Length'] == null) {
     opts.headers['Content-Length'] = Buffer.byteLength(data);
   }
 
@@ -43,7 +47,7 @@ function request(url, opts = {}, body = '') {
     if (!(url instanceof URL)) {
       url = new URL(url); // coerces input into URL if not one already
     }
-    const protocol = protocols[url.protocol?.slice(0, -1)]; // removes trailing colon from URL protocol value
+    const protocol = protocols[url.protocol.replace(/:$/, '')]; // removes trailing colon from URL protocol value
     const tick = new Date().getTime();
     const request = protocol.request(url, opts, response => {
       const chunks = []; // creates an empty array to store response body
@@ -65,7 +69,7 @@ function request(url, opts = {}, body = '') {
         finally {
           const color = `\x1b[${colors[response.statusCode.toString().charAt(0)] || 36}m`; // applies style changes, defaults to blue
           const reset = '\x1b[0m'; // resets style changes
-          console.debug(`${color}${request.method} ${request.protocol}//${request.host}${request.path} ${response.statusCode} ${tock - tick}ms${reset}`);
+          console.debug(`${color}${request.method} ${url.protocol}//${url.host}${request.path} ${response.statusCode} ${tock - tick}ms${reset}`);
         }
       });
 
